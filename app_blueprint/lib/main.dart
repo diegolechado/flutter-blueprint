@@ -30,12 +30,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Text("Home"),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Container(
+          margin: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: TextField(
+                    decoration: InputDecoration(labelText: "Repository name"),
+                  )),
+                  IconButton(icon: Icon(Icons.search), onPressed: () {})
+                ],
+              )
+            ],
+          ),
+        ));
   }
 }
