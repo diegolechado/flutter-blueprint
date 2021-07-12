@@ -1,3 +1,4 @@
+import 'package:app_blueprint/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,42 +13,7 @@ class BlueprintApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(title: 'Blueprint app'),
+      home: HomeScreen(title: 'Blueprint app'),
     );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Container(
-          margin: EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    decoration: InputDecoration(labelText: "Repository name"),
-                  )),
-                  IconButton(icon: Icon(Icons.search), onPressed: () {})
-                ],
-              )
-            ],
-          ),
-        ));
   }
 }
