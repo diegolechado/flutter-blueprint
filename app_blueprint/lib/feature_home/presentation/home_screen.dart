@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({required this.title});
 
-  final String basicAuth = 'Basic ' +
-      base64Encode(
-          utf8.encode('diegolechado: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'));
+  final String basicAuth =
+      'Basic ' + base64Encode(utf8.encode('diegolechado:PERSONAL_TOKEN'));
 
   final String title;
 
