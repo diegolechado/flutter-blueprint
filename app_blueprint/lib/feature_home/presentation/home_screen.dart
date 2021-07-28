@@ -18,16 +18,6 @@ class HomeScreen extends StatefulWidget {
     print(text);
   }
 
-  getUserInfo(String text) async {
-    try {
-      var response = await Dio().get("https://api.github.com/user",
-          options: Options(headers: {"authorization": basicAuth}));
-      print(response);
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -45,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Container(
-          margin: EdgeInsets.all(Spacing.m),
+          margin: EdgeInsets.all(DSSpacing.m),
           child: Column(
             children: [
               DSSearchBox(
-                  placeholder: "Repository name", onSearch: widget.getUserInfo)
+                  placeholder: "Repository name", onSearch: widget.onSearch)
             ],
           ),
         ));

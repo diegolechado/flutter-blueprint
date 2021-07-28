@@ -25,6 +25,8 @@ class RemoteDatasource extends RemoteDatasourceType {
     switch (this.requestType) {
       case RequestType.pulls:
         return HttpMethod.get;
+      case RequestType.repositories:
+        return HttpMethod.get;
     }
   }
 
@@ -33,6 +35,8 @@ class RemoteDatasource extends RemoteDatasourceType {
     switch (this.requestType) {
       case RequestType.pulls:
         return null;
+      case RequestType.repositories:
+        return null;
     }
   }
 
@@ -40,10 +44,11 @@ class RemoteDatasource extends RemoteDatasourceType {
   Future<Response<dynamic>> request() async {
     switch (this.method) {
       case HttpMethod.get:
-        return Dio().get(this.path, options: Options(headers: this.headers));
+        return await Dio()
+            .get(this.path, options: Options(headers: this.headers));
     }
   }
 }
 
-enum RequestType { pulls }
+enum RequestType { pulls, repositories }
 enum HttpMethod { get }
