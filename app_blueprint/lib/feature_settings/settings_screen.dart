@@ -15,7 +15,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: Text("Settings"),
         ),
         body: Container(
-          margin: EdgeInsets.all(Spacing.m),
+          margin: EdgeInsets.all(DSSpacing.m),
           child: Column(
             children: [
               TextField(
@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onChanged: (text) {},
               ),
               Container(
-                padding: EdgeInsets.all(Spacing.m),
+                padding: EdgeInsets.all(DSSpacing.m),
                 child: DSButton(
                   title: "Salvar",
                   onPressed: () => {},

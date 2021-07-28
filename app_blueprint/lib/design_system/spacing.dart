@@ -1,4 +1,4 @@
-class Spacing {
+class DSSpacing {
   static const double zero = 0.0;
   static const double xs = 4.0;
   static const double s = 8.0;
