@@ -1,14 +1,31 @@
+import 'dart:convert';
+
 import 'package:app_blueprint/design_system/search_box.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({required this.title});
 
+  final String basicAuth = 'Basic ' +
+      base64Encode(
+          utf8.encode('diegolechado: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'));
+
   final String title;
 
   onSearch(String text) {
     print(text);
+  }
+
+  getUserInfo(String text) async {
+    try {
+      var response = await Dio().get("https://api.github.com/user",
+          options: Options(headers: {"authorization": basicAuth}));
+      print(response);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -31,10 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: EdgeInsets.all(Spacing.m),
           child: Column(
             children: [
-              SearchBox(
-                placeholder: "Repository name",
-                onSearch: widget.onSearch,
-              )
+              DSSearchBox(
+                  placeholder: "Repository name", onSearch: widget.getUserInfo)
             ],
           ),
         ));

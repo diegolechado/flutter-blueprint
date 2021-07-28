@@ -1,5 +1,5 @@
-import 'package:app_blueprint/home/presentation/home_screen.dart';
-import 'package:app_blueprint/settings/settings_screen.dart';
+import 'package:app_blueprint/feature_home/presentation/home_screen.dart';
+import 'package:app_blueprint/feature_settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

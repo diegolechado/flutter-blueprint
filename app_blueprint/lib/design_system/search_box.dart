@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SearchBox extends StatefulWidget {
+class DSSearchBox extends StatefulWidget {
   final String placeholder;
   final Function(String text) onSearch;
   String? text;
 
-  SearchBox({required this.placeholder, required this.onSearch});
+  DSSearchBox({required this.placeholder, required this.onSearch});
 
   @override
-  _SearchBoxState createState() => _SearchBoxState();
+  _DSSearchBoxState createState() => _DSSearchBoxState();
 }
 
-class _SearchBoxState extends State<SearchBox> {
+class _DSSearchBoxState extends State<DSSearchBox> {
   @override
   Widget build(BuildContext context) {
     return Row(
