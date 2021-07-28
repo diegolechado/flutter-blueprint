@@ -11,7 +11,7 @@ class DSButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        padding: EdgeInsets.all(Spacing.m),
+        padding: EdgeInsets.all(DSSpacing.m),
         primary: Colors.blue,
       ),
       onPressed: onPressed,
