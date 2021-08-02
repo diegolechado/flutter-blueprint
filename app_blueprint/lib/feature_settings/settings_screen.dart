@@ -15,8 +15,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final userTokenController = TextEditingController();
 
   _submitUserToken() {
-    final title = userTokenController.text;
-    widget.onSubmit(title);
+    final userToken = userTokenController.text;
+
+    if (userToken.isEmpty) return;
+
+    widget.onSubmit(userToken);
     Navigator.of(context).pop();
   }
 
