@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:app_blueprint/design_system/search_box.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
