@@ -1,25 +1,13 @@
-import 'package:app_blueprint/feature_home/presentation/home_screen.dart';
-import 'package:app_blueprint/feature_settings/settings_screen.dart';
+import 'package:app_blueprint/app_module/app_module.dart';
+import 'package:app_blueprint/app_module/app_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 void main() {
-  runApp(BlueprintApp());
-}
-
-class BlueprintApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: "/",
-      routes: {
-        "/": (context) => HomeScreen(title: "Blueprint app"),
-        "/settings": (context) => SettingsScreen()
-      },
-    );
-  }
+  runApp(
+      ModularApp(
+          module: AppModule(),
+          child: AppWidget()
+      )
+  );
 }

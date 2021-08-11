@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 abstract class RemoteDatasourceType {
   RequestType? requestType;
   String? path;
-  String get baseUrl;
   HttpMethod get method;
   Map<String, dynamic>? get headers;
   Future<Response<dynamic>> request();
@@ -14,11 +13,6 @@ class RemoteDatasource extends RemoteDatasourceType {
   final String path;
 
   RemoteDatasource({required this.requestType, required this.path});
-
-  @override
-  String get baseUrl {
-    return "https://api.github.com";
-  }
 
   @override
   HttpMethod get method {
