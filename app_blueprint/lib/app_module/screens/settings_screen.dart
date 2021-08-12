@@ -1,10 +1,12 @@
 import 'package:app_blueprint/design_system/button.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
+import 'package:app_blueprint/utils/local_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SettingsScreen extends StatefulWidget {
+  String? token;
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -22,22 +24,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                       TextField(
                           decoration: InputDecoration(labelText: "API Token"),
-                          onSubmitted: (text) => {}
+                          onSubmitted: (text) => widget.token = text
                       ),
                       Container(
                           padding: EdgeInsets.all(DSSpacing.m),
                           child: DSButton(
                             title: "Salvar",
-                            onPressed: () async {
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              String? x = prefs.getString('num');
-                              print(x);
-                            },
+                            onPressed: onPressed
                           )
                       )
                   ]
               )
           )
       );
+    }
+
+    void onPressed() async {
+        bool x = await Modular.get<LocalStorage>().save('API-Token', widget.token);
     }
 }

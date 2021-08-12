@@ -4,7 +4,6 @@ import 'package:app_blueprint/design_system/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,12 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.only(bottom: DSSpacing.l),
                     child: DSSearchBox(
                         placeholder: "Repository name",
-                        onSearch: (text) async {
-                          homeBloc.add(StartEventHome(text: text));
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          bool x = await prefs.setString('num',text);
-                          print(x);
-                        }
+                        onSearch: (text) => homeBloc.add(StartEventHome(text: text))
                     )
                 ),
                 BlocBuilder(
