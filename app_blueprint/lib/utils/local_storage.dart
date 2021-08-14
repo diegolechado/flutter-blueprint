@@ -22,7 +22,7 @@ class LocalStorage {
         }
     }
 
-    Future<dynamic> read(key, type) async {
+    dynamic read(String key, type) async {
         final sp = await SharedPreferences.getInstance();
         switch(type) {
             case String:

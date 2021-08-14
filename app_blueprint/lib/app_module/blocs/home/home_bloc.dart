@@ -14,17 +14,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     @override
     Stream<HomeState> mapEventToState(HomeEvent event) async* {
         if (event is StartEventHome)
-            yield* _start(event);
+            yield* _start();
     }
 
-    Stream<HomeState> _start(StartEventHome event) async* {
+    Stream<HomeState> _start() async* {
         yield LoadingStateHome();
 
-        final result = await useCase.execute(event.text);
+        final result = await useCase.execute();
 
         yield result.fold(
             (failure) => FailureStateHome(message: failure.message),
-            (success) => SuccessStateHome(result: success),
+            (success) => SuccessStateHome(list: success),
         );
     }
 

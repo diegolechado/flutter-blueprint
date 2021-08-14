@@ -15,7 +15,7 @@ class FailureStateHome extends HomeState {
 }
 
 class SuccessStateHome extends HomeState {
-  final ReposModel result;
+  final List<ReposModel> list;
 
-  const SuccessStateHome({required this.result});
+  const SuccessStateHome({required this.list});
 }

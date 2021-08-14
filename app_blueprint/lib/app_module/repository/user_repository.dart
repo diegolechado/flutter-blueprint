@@ -4,7 +4,7 @@ import 'package:app_blueprint/app_module/models/repos_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, ReposModel>> retrieveRepositories(String name);
+  Future<Either<Failure, List<ReposModel>>> retrieveRepositories(String token);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -13,11 +13,12 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.userDatasource});
 
   @override
-  Future<Either<Failure, ReposModel>> retrieveRepositories(String name) async {
+  Future<Either<Failure, List<ReposModel>>> retrieveRepositories(String token) async {
       try {
-          final result = await userDatasource.retrieveRepositories(name);
+          final result = await userDatasource.retrieveRepositories(token);
           return Right(result);
       } catch (e) {
+          print(e);
           return Left(DatasourceError());
       }
   }

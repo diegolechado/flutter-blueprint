@@ -3,7 +3,7 @@ import 'package:app_blueprint/utils/remote_datasource.dart';
 import 'package:dio/dio.dart';
 
 abstract class UserDatasource {
-  Future<ReposModel> retrieveRepositories(String name);
+  Future<List<ReposModel>> retrieveRepositories(String token);
 }
 
 class GitHubDatasource implements UserDatasource {
@@ -12,11 +12,23 @@ class GitHubDatasource implements UserDatasource {
   GitHubDatasource({required this.client});
 
   @override
-  Future<ReposModel> retrieveRepositories(String name) async {
-      final Response response = await client.request(method: HttpMethod.get, path: "https://api.github.com/repos/$name");
+  Future<List<ReposModel>> retrieveRepositories(String token) async {
+      Response response = await client.request(
+          method: HttpMethod.get,
+          path: "https://api.github.com/user/repos",
+          options: BaseOptions(
+              headers: {
+                'Authorization': 'token $token'
+              }
+          )
+      );
 
-      if(response.statusCode == 200)
-          return ReposModel.fromMap(response.data);
+      if(response.statusCode == 200) {
+          final jsonList = response.data as List;
+          List<ReposModel> list = [];
+          jsonList.forEach((i) => list.add(ReposModel.fromMap(i)));
+          return list;
+      }
       else
           throw Exception();
   }

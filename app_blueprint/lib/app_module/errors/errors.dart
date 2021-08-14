@@ -2,14 +2,9 @@ abstract class Failure implements Exception {
   String message = "";
 }
 
-class InvalidName extends Failure {
+class EmptyTokenAPI extends Failure {
   @override
-  String get message => "O Texto é inválido";
-}
-
-class RepoNotFound extends Failure {
-  @override
-  String get message => "Não encontramos o repositório";
+  String get message => "Erro ao carregar os repositorios\nNecessário preencher o Token de API da pagina Settings";
 }
 
 class DatasourceError extends Failure {

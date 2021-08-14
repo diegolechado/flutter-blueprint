@@ -5,7 +5,5 @@ abstract class HomeEvent {
 }
 
 class StartEventHome extends HomeEvent {
-  final String text;
-
-  const StartEventHome({required this.text});
+  const StartEventHome();
 }

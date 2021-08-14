@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                       TextField(
                           decoration: InputDecoration(labelText: "API Token"),
-                          onSubmitted: (text) => widget.token = text
+                          onChanged: (text) => widget.token = "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"
                       ),
                       Container(
                           padding: EdgeInsets.all(DSSpacing.m),
@@ -41,5 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     void onPressed() async {
         bool x = await Modular.get<LocalStorage>().save('API-Token', widget.token);
+        print(widget.token);
+        print(x);
     }
 }
