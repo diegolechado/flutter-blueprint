@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/app_module/use_case/retrieve_user_repositories_use_case.dart';
+import 'package:app_blueprint/app_module/use_case/user_repositories_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-    final RetrieveUserRepositoriesUseCase useCase;
+    final UserRepositoriesUseCase useCase;
 
     HomeBloc(this.useCase) : super(InitialStateHome());
 

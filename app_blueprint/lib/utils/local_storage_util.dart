@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorage {
+class LocalStorageUtil {
     Future<bool> clear() async {
         final sp = await SharedPreferences.getInstance();
         return sp.clear();

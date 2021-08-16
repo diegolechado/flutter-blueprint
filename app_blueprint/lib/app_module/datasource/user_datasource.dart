@@ -1,5 +1,5 @@
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/utils/remote_datasource.dart';
+import 'package:app_blueprint/utils/connect_util.dart';
 import 'package:dio/dio.dart';
 
 abstract class UserDatasource {
@@ -7,13 +7,13 @@ abstract class UserDatasource {
 }
 
 class GitHubDatasource implements UserDatasource {
-  final RemoteDataSource client;
+  final ConnectUtil connect;
 
-  GitHubDatasource({required this.client});
+  GitHubDatasource({required this.connect});
 
   @override
   Future<List<ReposModel>> retrieveRepositories(String token) async {
-      Response response = await client.request(
+      final response = await connect.request(
           method: HttpMethod.get,
           path: "https://api.github.com/user/repos",
           options: BaseOptions(

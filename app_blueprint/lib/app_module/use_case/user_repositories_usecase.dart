@@ -1,22 +1,22 @@
 import 'package:app_blueprint/app_module/errors/errors.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
 import 'package:app_blueprint/app_module/repository/user_repository.dart';
-import 'package:app_blueprint/utils/local_storage.dart';
+import 'package:app_blueprint/utils/local_storage_util.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-abstract class RetrieveUserRepositoriesUseCase {
+abstract class UserRepositoriesUseCase {
   Future<Either<Failure, List<ReposModel>>> execute();
 }
 
-class RetrieveUserRepositoriesUseCaseImpl implements RetrieveUserRepositoriesUseCase {
+class UserRepositoriesUseCaseImpl implements UserRepositoriesUseCase {
   final UserRepository userRepository;
+  final LocalStorageUtil storage;
 
-  RetrieveUserRepositoriesUseCaseImpl({required this.userRepository});
+  UserRepositoriesUseCaseImpl({required this.userRepository, required this.storage});
 
   @override
   Future<Either<Failure, List<ReposModel>>> execute() async {
-      final token = await Modular.get<LocalStorage>().read('API-Token', String);
+      String? token = await storage.read('API-Token', String);
 
       if(token == null)
           return Left(EmptyTokenAPI());

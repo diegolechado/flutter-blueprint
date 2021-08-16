@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Blueprint app_module"),
+          title: Text("Home"),
           actions: [
             IconButton(
                 icon: Icon(Icons.settings),

@@ -1,6 +1,6 @@
 import 'package:app_blueprint/design_system/button.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
-import 'package:app_blueprint/utils/local_storage.dart';
+import 'package:app_blueprint/utils/local_storage_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     void onPressed() async {
-        bool x = await Modular.get<LocalStorage>().save('API-Token', widget.token);
+        bool x = await Modular.get<LocalStorageUtil>().save('API-Token', widget.token);
         print(widget.token);
         print(x);
     }
