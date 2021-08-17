@@ -35,7 +35,6 @@ dev_dependencies:
     sdk: flutter
   flutter_modular_test: ^1.0.1
   bloc_test: ^8.1.0
-  mockito: ^5.0.14
 
 flutter:
   uses-material-design: true

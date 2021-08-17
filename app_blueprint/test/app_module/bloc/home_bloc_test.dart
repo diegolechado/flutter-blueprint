@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_modular_test/flutter_modular_test.dart';
@@ -15,14 +15,12 @@ class UserRepositoriesUseCaseMock extends Mock implements UserRepositoriesUseCas
 main() {
     final usecase = UserRepositoriesUseCaseMock();
 
-    initModule(AppModule());
-
-    HomeBloc bloc = Modular.get<HomeBloc>();
-
     blocTest(
         'Deve emitir sequencia correta de estados',
         build: () {
-          when((usecase.execute())).thenAnswer((_) => Future.value(Right<Failure, List<ReposModel>>(<ReposModel>[])));
+          initModule(AppModule());
+          HomeBloc bloc = Modular.get<HomeBloc>();
+          when(() => usecase.execute()).thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
           return bloc;
         },
         act: (HomeBloc bloc) => bloc.add(StartEventHome()),

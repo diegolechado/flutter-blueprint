@@ -8,7 +8,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_modular/flutter_modular.dart' as Modular;
 import 'package:flutter_modular_test/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class UserRepositoryMock extends Mock implements UserRepository {}
 
@@ -29,8 +29,8 @@ main() {
   test(
       'Deve retornar uma lista com resultados',
       () async {
-          when(storage.read('API-Token', String)).thenAnswer((_) => Future.value('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'));
-          when(repository.retrieveRepositories('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')).thenAnswer((_) => Future.value(Right<Failure, List<ReposModel>>(<ReposModel>[])));
+          when(() => storage.read('API-Token', String)).thenAnswer((_) async => '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');
+          when(() => repository.retrieveRepositories('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')).thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
           var result = await usecase.execute();
           expect(result.isRight(), true);
           expect(result | [], isA<List<ReposModel>>());
@@ -40,7 +40,7 @@ main() {
   test(
       'Deve retornar um EmptyTokenAPI caso não consiga recuperar o tokn',
       () async {
-          when(storage.read('API-Token', String)).thenAnswer((_) => Future.value(null));
+          when(() => storage.read('API-Token', String)).thenAnswer((_) async => null);
           var result = await usecase.execute();
           final error = result.fold<Failure?>(id, (_) => null);
           expect(error, isA<EmptyTokenAPI>());
