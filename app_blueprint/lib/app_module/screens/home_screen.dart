@@ -63,12 +63,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Container(
                                       padding: EdgeInsets.all(DSSpacing.m),
                                       child: DSButton(
-                                          title: "Salvar",
+                                          title: "Recarregar",
                                           onPressed: () => homeBloc.add(StartEventHome())
                                       )
                                   ),
                                   Center(
-                                      child: Text('${state.message}')
+                                      child: Text(
+                                          '${state.message}',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 16,
+                                              color: Color(0xFF000000)
+                                          )
+                                      )
                                   )
                               ]
                             );

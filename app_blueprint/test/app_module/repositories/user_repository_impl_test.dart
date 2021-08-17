@@ -1,4 +1,3 @@
-import 'package:app_blueprint/app_module/datasource/user_datasource.dart';
 import 'package:app_blueprint/app_module/errors/errors.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
 import 'package:app_blueprint/app_module/repository/user_repository.dart';
@@ -6,14 +5,14 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class UserDatasourceMock extends Mock implements UserDatasource {}
+import '../../mock/mock.dart';
 
 main() {
     final datasource = UserDatasourceMock();
     final repository = UserRepositoryImpl(userDatasource: datasource);
 
     test(
-        'Deve retornar uma lista de ResultModel',
+        'Deve retornar uma lista de ReposModel',
         () async {
           when(() => datasource.retrieveRepositories('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')).thenAnswer((_) async => <ReposModel>[]);
           var result = await repository.retrieveRepositories("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");

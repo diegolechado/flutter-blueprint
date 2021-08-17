@@ -9,7 +9,7 @@ abstract class ConnectUtil {
 class DioConnectDataSource implements ConnectUtil {
     final Dio dio;
 
-    DioConnectDataSource(this.dio);
+    DioConnectDataSource({required this.dio});
 
     @override
     Future<Response> request({required HttpMethod method, required String path, Map<String, dynamic>? data, BaseOptions? options}) async {

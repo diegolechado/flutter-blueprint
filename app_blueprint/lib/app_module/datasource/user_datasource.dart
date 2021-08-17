@@ -7,21 +7,29 @@ abstract class UserDatasource {
 }
 
 class GitHubDatasource implements UserDatasource {
-  final ConnectUtil connect;
+  final Dio dio;
 
-  GitHubDatasource({required this.connect});
+  GitHubDatasource({required this.dio});
 
   @override
   Future<List<ReposModel>> retrieveRepositories(String token) async {
-      final response = await connect.request(
-          method: HttpMethod.get,
-          path: "https://api.github.com/user/repos",
-          options: BaseOptions(
-              headers: {
-                'Authorization': 'token $token'
-              }
-          )
+      // final response = await connect.request(
+      //     method: HttpMethod.get,
+      //     path: "https://api.github.com/user/repos",
+      //     options: BaseOptions(
+      //         headers: {
+      //           'Authorization': 'token $token'
+      //         }
+      //     )
+      // );
+
+      dio.options = BaseOptions(
+          headers: {
+            'Authorization': 'token $token'
+          }
       );
+
+      Response response = await dio.get("https://api.github.com/user/repos");
 
       if(response.statusCode == 200) {
           final jsonList = response.data as List;

@@ -14,8 +14,8 @@ class AppModule extends Module {
     final List<Bind> binds = [
         Bind((i) => LocalStorageUtil()),
         Bind((i) => Dio()),
-        Bind((i) => DioConnectDataSource(i())),
-        Bind((i) => GitHubDatasource(connect: i())),
+        Bind((i) => DioConnectDataSource(dio: i())),
+        Bind((i) => GitHubDatasource(dio: i())),
         Bind((i) => UserRepositoryImpl(userDatasource: i())),
         Bind((i) => UserRepositoriesUseCaseImpl(userRepository: i(), storage: i())),
         Bind.singleton((i) => HomeBloc(i())),
