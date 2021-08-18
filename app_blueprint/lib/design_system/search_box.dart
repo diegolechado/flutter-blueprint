@@ -12,24 +12,27 @@ class DSSearchBox extends StatefulWidget {
 }
 
 class _DSSearchBoxState extends State<DSSearchBox> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-            child: TextField(
-          decoration: InputDecoration(labelText: widget.placeholder),
-          onChanged: (text) {
-            widget.text = text;
-          },
-        )),
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () => {
-            if (widget.text != null) {widget.onSearch(widget.text!)}
-          },
-        )
-      ],
-    );
-  }
+    @override
+    Widget build(BuildContext context) {
+        return Row(
+            children: [
+                Expanded(
+                    child: TextField(
+                    decoration: InputDecoration(labelText: widget.placeholder),
+                    onChanged: (text) {
+                        setState(() {
+                          widget.text = text;
+                        });
+                    }
+                )),
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () => {
+                      if(widget.text != null)
+                        widget.onSearch(widget.text!)
+                    }
+                )
+            ]
+        );
+    }
 }
