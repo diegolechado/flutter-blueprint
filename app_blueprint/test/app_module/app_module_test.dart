@@ -14,7 +14,7 @@ import 'package:app_blueprint/app_module/datasource/storage_datasource.dart';
 import '../mock/mock.dart';
 
 main() {
-    final storage = LocalStorageUtilMock();
+    final storage = SharedPreferencesDatasourceMock();
     final DioConnectDatasourceMock connect = DioConnectDatasourceMock();
 
     initModule(

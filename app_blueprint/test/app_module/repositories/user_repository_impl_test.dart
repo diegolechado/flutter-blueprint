@@ -1,6 +1,6 @@
 import 'package:app_blueprint/app_module/errors/errors.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/app_module/repository/user_repository.dart';
+import 'package:app_blueprint/app_module/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,7 +14,7 @@ main() {
     test(
         'Deve retornar uma lista de ReposModel',
         () async {
-          when(() => datasource.retrieveListRepositories('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')).thenAnswer((_) async => <ReposModel>[]);
+          when(() => datasource.retrieveListRepositories('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', 1)).thenAnswer((_) async => <ReposModel>[]);
           var result = await repository.retrieveListRepositories("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");
           expect(result | [], isA<List<ReposModel>>());
         }
@@ -23,7 +23,7 @@ main() {
     test(
         'Deve retornar um DatasourceError caso seja lançado um erro no datasource',
         () async {
-          when(() => datasource.retrieveListRepositories('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')).thenThrow(Exception());
+          when(() => datasource.retrieveListRepositories('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', 1)).thenThrow(Exception());
           var result = await repository.retrieveListRepositories("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");
           final error = result.fold<Failure?>(id, (_) => null);
           expect(error, isA<DatasourceError>());

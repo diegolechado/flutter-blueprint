@@ -10,7 +10,7 @@ import '../../mock/mock.dart';
 
 main() {
   final DioConnectDatasourceMock connect = DioConnectDatasourceMock();
-  final GitHubDatasource datasource = GitHubDatasource(connect);
+  final GitHubDatasource datasource = GitHubDatasource(dioConnect: connect);
 
   test(
       'Deve retornar uma lista de ReposModel',
@@ -21,7 +21,7 @@ main() {
               path: any(),
               options: any()
           )).thenAnswer((_) async => Response(requestOptions: RequestOptions(path: ""), statusCode: 200, data: jsonResponse));
-          var result = await datasource.retrieveListRepositories("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");
+          var result = await datasource.retrieveListRepositories("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", 1);
           expect(result, isA<List<ReposModel>>());
       }
   );

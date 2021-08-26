@@ -9,7 +9,7 @@ import '../../mock/mock.dart';
 
 main() {
   final repository = UserRepositoryMock();
-  final storage = LocalStorageUtilMock();
+  final storage = SharedPreferencesDatasourceMock();
   final usecase = UserRepositoriesUseCaseImpl(userRepository: repository, storage: storage);
 
   test(
