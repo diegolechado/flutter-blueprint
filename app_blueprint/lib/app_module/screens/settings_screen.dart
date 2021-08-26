@@ -1,6 +1,6 @@
 import 'package:app_blueprint/design_system/button.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
-import 'package:app_blueprint/utils/local_storage_util.dart';
+import 'package:app_blueprint/app_module/datasource/storage_datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,15 +23,16 @@ class SettingsScreen extends StatelessWidget {
             padding: EdgeInsets.all(DSSpacing.l),
             child: Column(
                 children: [
-                  TextField(
+                  TextFormField(
                       decoration: InputDecoration(labelText: "API Token"),
+                      initialValue: token,
                       onChanged: (text) => token = text
                   ),
                   SizedBox(height: DSSpacing.l),
                   DSButton(
                       title: "Salvar",
                       onPressed: () async {
-                          bool save = await Modular.get<LocalStorageUtil>().save('API-Token', token);
+                          bool save = await Modular.get<SharedPreferencesDatasource>().save('API-Token', token);
 
                           if(save)
                               ScaffoldMessenger.of(context).showSnackBar(

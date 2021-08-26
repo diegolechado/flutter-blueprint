@@ -1,40 +1,57 @@
+import 'package:app_blueprint/app_module/models/pulls_model.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/utils/connect_util.dart';
+import 'package:app_blueprint/app_module/datasource/connect_datasource.dart';
 import 'package:dio/dio.dart';
 
 abstract class UserDatasource {
-  Future<List<ReposModel>> retrieveRepositories(String token);
+  Future<List<ReposModel>> retrieveListRepositories(String token);
+
+  Future<List<PullsModel>> retrievePullsList(String token, String url);
 }
 
 class GitHubDatasource implements UserDatasource {
-  final Dio dio;
+  final DioConnectDatasource dioConnect;
 
-  GitHubDatasource({required this.dio});
+  GitHubDatasource({required this.dioConnect});
 
   @override
-  Future<List<ReposModel>> retrieveRepositories(String token) async {
-      // final response = await connect.request(
-      //     method: HttpMethod.get,
-      //     path: "https://api.github.com/user/repos",
-      //     options: BaseOptions(
-      //         headers: {
-      //           'Authorization': 'token $token'
-      //         }
-      //     )
-      // );
-
-      dio.options = BaseOptions(
-          headers: {
-            'Authorization': 'token $token'
-          }
+  Future<List<ReposModel>> retrieveListRepositories(String token) async {
+      final response = await dioConnect.request(
+          method: HttpMethod.get,
+          path: "https://api.github.com/user/repos?per_page=100",
+          options: BaseOptions(
+              headers: {
+                'Authorization': 'token $token'
+              }
+          )
       );
-
-      Response response = await dio.get("https://api.github.com/user/repos");
 
       if(response.statusCode == 200) {
           final jsonList = response.data as List;
           List<ReposModel> list = [];
           jsonList.forEach((i) => list.add(ReposModel.fromMap(i)));
+          return list;
+      }
+      else
+          throw Exception();
+  }
+
+  @override
+  Future<List<PullsModel>> retrievePullsList(String token, String url) async {
+      final response = await dioConnect.request(
+          method: HttpMethod.get,
+          path: "$url/pulls?state=all&per_page=100",
+          options: BaseOptions(
+              headers: {
+                'Authorization': 'token $token'
+              }
+          )
+      );
+
+      if(response.statusCode == 200) {
+          final jsonList = response.data as List;
+          List<PullsModel> list = [];
+          jsonList.forEach((i) => list.add(PullsModel.fromMap(i)));
           return list;
       }
       else

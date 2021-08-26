@@ -15,20 +15,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final HomeBloc homeBloc = Modular.get<HomeBloc>();
-  List<ReposModel> listSearchResult = [];
-  List<ReposModel> listAllResult = [];
-  bool visible = false;
+  final HomeBloc _homeBloc = Modular.get<HomeBloc>();
+  List<ReposModel> _listSearchResult = [];
+  List<ReposModel> _listAllResult = [];
+  bool _visible = false;
 
   @override
   void initState() {
-      homeBloc.add(StartEventHome());
+      _homeBloc.add(StartEventHome());
       super.initState();
   }
 
   @override
   void dispose() {
-      homeBloc.close();
+      _homeBloc.close();
       super.dispose();
   }
 
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SafeArea(
             child: BlocBuilder(
-                bloc: homeBloc,
+                bloc: _homeBloc,
                 builder: (context, state) {
                     if(state is LoadingStateHome)
                         return Container(
@@ -87,13 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SizedBox(height: DSSpacing.l),
                                     DSButton(
                                         title: "Recarregar",
-                                        onPressed: () => homeBloc.add(StartEventHome())
+                                        onPressed: () => _homeBloc.add(StartEventHome())
                                     )
                                 ]
                             )
                         );
                     else if(state is SuccessStateHome) {
-                        listAllResult.addAll(state.list);
+                        _listAllResult.clear();
+                        _listAllResult.addAll(state.list);
                         return buildSuccess();
                     }
                     else
@@ -105,22 +106,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onSearchTextChanged(String text) {
-      listSearchResult.clear();
+      _listSearchResult.clear();
 
       if(text.isEmpty) {
           setState(() {
-              visible = false;
+              _visible = false;
           });
           return;
       }
 
-      listAllResult.forEach((item) {
+      _listAllResult.forEach((item) {
           if(item.name.contains(text))
-              listSearchResult.add(item);
+              _listSearchResult.add(item);
       });
 
       setState(() {
-          visible = true;
+          _visible = true;
       });
   }
 
@@ -136,21 +137,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
               ),
               Visibility(
-                  visible: visible,
+                  visible: _visible,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(
-                          listSearchResult.length,
-                          (i) => buildItem(listSearchResult[i])
+                          _listSearchResult.length,
+                          (i) => buildItem(_listSearchResult[i])
                       )
                   ),
                   replacement: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(
-                          listAllResult.length,
-                          (i) => buildItem(listAllResult[i])
+                          _listAllResult.length,
+                          (i) => buildItem(_listAllResult[i])
                       )
                   )
               )
@@ -159,38 +160,35 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildItem(ReposModel repo) {
-      return Container(
-          height: 150,
-          color: Color(0xFFF0F0F0),
-          margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
-          child: Row(
-              children: [
-                  Container(color: Color(0xFF000000), width: 2),
-                  Expanded(
-                      child: Container(
-                          padding: EdgeInsets.all(DSSpacing.m),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                  AutoSizeText(
-                                    'Nome: ${repo.name}',
-                                    minFontSize: 15,
-                                    maxFontSize: 18,
-                                    style: GoogleFonts.roboto(color: Color(0xFF000000))
-                                  ),
-                                  SizedBox(height: DSSpacing.xs),
-                                  AutoSizeText(
-                                      'Descrição: ${repo.description}',
-                                      minFontSize: 12,
-                                      maxFontSize: 15,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000))
-                                  )
-                              ]
+      return GestureDetector(
+          onTap: () => Navigator.pushNamed(
+              context,
+              "/pulls",
+              arguments: {
+                "name": repo.name,
+                "url": repo.url
+              }
+          ),
+          child: Container(
+              height: 50,
+              color: Color(0xFFF0F0F0),
+              margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
+              child: Row(
+                  children: [
+                      Container(color: Color(0xFF000000), width: 2),
+                      Expanded(
+                          child: Container(
+                              padding: EdgeInsets.all(DSSpacing.m),
+                              child: AutoSizeText(
+                                  'Nome: ${repo.name}',
+                                  minFontSize: 15,
+                                  maxFontSize: 18,
+                                  style: GoogleFonts.roboto(color: Color(0xFF000000))
+                              )
                           )
                       )
-                  )
-              ]
+                  ]
+              )
           )
       );
   }

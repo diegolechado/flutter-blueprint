@@ -1,7 +1,7 @@
 import 'package:app_blueprint/app_module/errors/errors.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/app_module/repository/user_repository.dart';
-import 'package:app_blueprint/utils/local_storage_util.dart';
+import 'package:app_blueprint/app_module/repositories/user_repository.dart';
+import 'package:app_blueprint/app_module/datasource/storage_datasource.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class UserRepositoriesUseCase {
@@ -10,7 +10,7 @@ abstract class UserRepositoriesUseCase {
 
 class UserRepositoriesUseCaseImpl implements UserRepositoriesUseCase {
   final UserRepository userRepository;
-  final LocalStorageUtil storage;
+  final SharedPreferencesDatasource storage;
 
   UserRepositoriesUseCaseImpl({required this.userRepository, required this.storage});
 
@@ -21,6 +21,6 @@ class UserRepositoriesUseCaseImpl implements UserRepositoriesUseCase {
       if(token == null)
           return Left(EmptyTokenAPI());
       else
-          return userRepository.retrieveRepositories(token);
+          return userRepository.retrieveListRepositories(token);
   }
 }

@@ -16,7 +16,7 @@ main() {
       'Deve retornar uma lista com resultados',
       () async {
           when(() => storage.read('API-Token', String)).thenAnswer((_) async => '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');
-          when(() => repository.retrieveRepositories('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')).thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
+          when(() => repository.retrieveListRepositories('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')).thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
           var result = await usecase.execute();
           expect(result.isRight(), true);
           expect(result | [], isA<List<ReposModel>>());

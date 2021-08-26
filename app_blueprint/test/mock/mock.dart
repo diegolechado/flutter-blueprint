@@ -1,13 +1,13 @@
+import 'package:app_blueprint/app_module/datasource/connect_datasource.dart';
 import 'package:app_blueprint/app_module/datasource/user_datasource.dart';
 import 'package:app_blueprint/app_module/repository/user_repository.dart';
 import 'package:app_blueprint/app_module/use_case/user_repositories_usecase.dart';
-import 'package:app_blueprint/utils/local_storage_util.dart';
-import 'package:dio/dio.dart';
+import 'package:app_blueprint/app_module/datasource/storage_datasource.dart';
 import 'package:mocktail/mocktail.dart';
 
-class LocalStorageUtilMock extends Mock implements LocalStorageUtil { }
+class LocalStorageUtilMock extends Mock implements SharedPreferencesDatasource { }
 
-class DioMock extends Mock implements Dio { }
+class DioConnectDatasourceMock extends Mock implements DioConnectDatasource {}
 
 class UserDatasourceMock extends Mock implements UserDatasource { }
 

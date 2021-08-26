@@ -2,17 +2,24 @@ import 'package:dio/dio.dart';
 
 enum HttpMethod { get, post, put, delete }
 
-abstract class ConnectUtil {
-    Future<Response> request({required HttpMethod method, required String path, Map<String, dynamic>? data, BaseOptions? options});
+abstract class ConnectDatasource {
+    Future<Response> request({
+        required HttpMethod method,
+        required String path,
+        Map<String, dynamic>? data,
+        BaseOptions? options});
 }
 
-class DioConnectDataSource implements ConnectUtil {
-    final Dio dio;
-
-    DioConnectDataSource({required this.dio});
-
+class DioConnectDatasource implements ConnectDatasource {
     @override
-    Future<Response> request({required HttpMethod method, required String path, Map<String, dynamic>? data, BaseOptions? options}) async {
+    Future<Response> request({
+        required HttpMethod method,
+        required String path,
+        Map<String, dynamic>? data,
+        BaseOptions? options}) async {
+
+        Dio dio = Dio();
+
         if(options != null)
             dio.options = options;
 

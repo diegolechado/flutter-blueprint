@@ -14,8 +14,8 @@ main() {
     test(
         'Deve retornar uma lista de ReposModel',
         () async {
-          when(() => datasource.retrieveRepositories('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')).thenAnswer((_) async => <ReposModel>[]);
-          var result = await repository.retrieveRepositories("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");
+          when(() => datasource.retrieveListRepositories('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')).thenAnswer((_) async => <ReposModel>[]);
+          var result = await repository.retrieveListRepositories("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");
           expect(result | [], isA<List<ReposModel>>());
         }
     );
@@ -23,8 +23,8 @@ main() {
     test(
         'Deve retornar um DatasourceError caso seja lançado um erro no datasource',
         () async {
-          when(() => datasource.retrieveRepositories('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')).thenThrow(Exception());
-          var result = await repository.retrieveRepositories("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");
+          when(() => datasource.retrieveListRepositories('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')).thenThrow(Exception());
+          var result = await repository.retrieveListRepositories("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");
           final error = result.fold<Failure?>(id, (_) => null);
           expect(error, isA<DatasourceError>());
         }
