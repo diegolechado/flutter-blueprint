@@ -193,6 +193,7 @@ class _PullsScreenState extends State<PullsScreen> {
                                       getTimeString(pullsModel.differenceTime!.inMinutes),
                                       minFontSize: 15,
                                       maxFontSize: 18,
+                                      maxLines: 1,
                                       style: GoogleFonts.roboto(color: Color(0xFF000000), fontWeight: FontWeight.bold)
                                   )
                                   : Container()

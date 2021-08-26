@@ -15,8 +15,15 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<Failure, List<ReposModel>>> retrieveListRepositories(String token) async {
       try {
-          final result = await userDatasource.retrieveListRepositories(token);
-          return Right(result);
+          final result1 = userDatasource.retrieveListRepositories(token, 1);
+          final result2 = userDatasource.retrieveListRepositories(token, 2);
+          final result3 = userDatasource.retrieveListRepositories(token, 3);
+
+          final result = await Future.wait([result1, result2, result3]);
+
+          List<ReposModel> list = result[0] + result[1] + result[2];
+
+          return Right(list);
       } catch (e) {
           print(e);
           return Left(DatasourceError());

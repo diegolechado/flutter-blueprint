@@ -129,13 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return ListView(
           padding: EdgeInsets.all(DSSpacing.l),
           children: [
-              Padding(
-                  padding: EdgeInsets.only(bottom: DSSpacing.l),
-                  child: DSSearchBox(
-                      placeholder: "Repository name",
-                      onSearch: onSearchTextChanged
-                  )
+              DSSearchBox(
+                  placeholder: "Repository name",
+                  onSearch: onSearchTextChanged
               ),
+              SizedBox(height: DSSpacing.l),
               Visibility(
                   visible: _visible,
                   child: Column(
@@ -170,21 +168,21 @@ class _HomeScreenState extends State<HomeScreen> {
               }
           ),
           child: Container(
-              height: 50,
-              color: Color(0xFFF0F0F0),
               margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
+              color: Color(0xFFF0F0F0),
+              height: 50,
               child: Row(
                   children: [
                       Container(color: Color(0xFF000000), width: 2),
-                      Expanded(
-                          child: Container(
-                              padding: EdgeInsets.all(DSSpacing.m),
-                              child: AutoSizeText(
-                                  'Nome: ${repo.name}',
-                                  minFontSize: 15,
-                                  maxFontSize: 18,
-                                  style: GoogleFonts.roboto(color: Color(0xFF000000))
-                              )
+                      SizedBox(width: DSSpacing.m),
+                      AutoSizeText(
+                          repo.name,
+                          minFontSize: 15,
+                          maxFontSize: 18,
+                          maxLines: 1,
+                          style: GoogleFonts.roboto(
+                              color: Color(0xFF000000),
+                              fontWeight: FontWeight.w400
                           )
                       )
                   ]

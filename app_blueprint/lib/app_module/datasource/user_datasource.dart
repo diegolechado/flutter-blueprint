@@ -4,7 +4,7 @@ import 'package:app_blueprint/app_module/datasource/connect_datasource.dart';
 import 'package:dio/dio.dart';
 
 abstract class UserDatasource {
-  Future<List<ReposModel>> retrieveListRepositories(String token);
+  Future<List<ReposModel>> retrieveListRepositories(String token, int page);
 
   Future<List<PullsModel>> retrievePullsList(String token, String url);
 }
@@ -15,10 +15,10 @@ class GitHubDatasource implements UserDatasource {
   GitHubDatasource({required this.dioConnect});
 
   @override
-  Future<List<ReposModel>> retrieveListRepositories(String token) async {
+  Future<List<ReposModel>> retrieveListRepositories(String token, int page) async {
       final response = await dioConnect.request(
           method: HttpMethod.get,
-          path: "https://api.github.com/user/repos?per_page=100",
+          path: "https://api.github.com/user/repos?per_page=100&page=$page",
           options: BaseOptions(
               headers: {
                 'Authorization': 'token $token'
