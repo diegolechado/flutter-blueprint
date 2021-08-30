@@ -38,18 +38,38 @@ class _PullsScreenState extends State<PullsScreen> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                title: Text(
-                    "Lista de Pull Request",
+                title: AutoSizeText(
+                    widget.name,
+                    minFontSize: 16,
+                    maxFontSize: 20,
+                    maxLines: 1,
                     style: GoogleFonts.roboto(color: Colors.white)
                 ),
+                centerTitle: true,
                 elevation: 0.0,
-                backgroundColor: Color(0xFF000000)
+                backgroundColor: Colors.black
             ),
             body: SafeArea(
                 child: BlocBuilder(
                     bloc: _pullsBloc,
                     builder: (context, state) {
-                        if(state is LoadingStatePulls)
+                        if(state is FailureStatePulls)
+                            return Padding(
+                                padding: EdgeInsets.all(DSSpacing.l),
+                                child: Center(
+                                    child: Text(
+                                        '${state.message}',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            color: Colors.black
+                                        )
+                                    )
+                                )
+                            );
+                        else if(state is SuccessStatePulls)
+                            return buildSuccess(state.listPullsModel);
+                        else
                             return Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
@@ -65,61 +85,39 @@ class _PullsScreenState extends State<PullsScreen> {
                                     )
                                 )
                             );
-                        else if(state is FailureStatePulls)
-                            return Padding(
-                                padding: EdgeInsets.all(DSSpacing.l),
-                                child: Center(
-                                    child: Text(
-                                        '${state.message}',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 16,
-                                            color: Color(0xFF000000)
-                                        )
-                                    )
-                                )
-                            );
-                        else if(state is SuccessStatePulls)
-                            return buildSuccess(state.listPullsModel);
-                        else
-                            return Container();
                     }
                 )
             )
         );
     }
 
-    Widget buildSuccess(List<PullsModel> listPullsModel) {
-        return SingleChildScrollView(
-            child: Padding(
+    Widget buildSuccess(List<PullsModel> listPullsModel) => SingleChildScrollView(
+        child: Padding(
+            padding: EdgeInsets.all(DSSpacing.l),
+            child: listPullsModel.length > 0
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(
+                    listPullsModel.length,
+                    (i) => buildItem(listPullsModel[i])
+                )
+            )
+            : Padding(
                 padding: EdgeInsets.all(DSSpacing.l),
-                child: Visibility(
-                    visible: listPullsModel.length > 0,
-                    replacement: Padding(
-                        padding: EdgeInsets.all(DSSpacing.l),
-                        child: Center(
-                            child: Text(
-                                "Este repositorio não tem nenhum PR",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    color: Color(0xFF000000)
-                                )
-                            )
-                        )
-                    ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(
-                            listPullsModel.length,
-                            (i) => buildItem(listPullsModel[i])
+                child: Center(
+                    child: Text(
+                        "Este repositorio não tem nenhum PR",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            color: Colors.black
                         )
                     )
                 )
             )
-        );
-    }
+        )
+    );
 
     Widget buildItem(PullsModel pullsModel) => Container(
           height: 214,
@@ -127,7 +125,7 @@ class _PullsScreenState extends State<PullsScreen> {
           margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
           child: Row(
               children: [
-                  Container(color: Color(0xFF000000), width: 2),
+                  Container(color: Colors.black, width: 2),
                   Expanded(
                       child: Container(
                           padding: EdgeInsets.all(DSSpacing.m),
@@ -152,7 +150,7 @@ class _PullsScreenState extends State<PullsScreen> {
                                                   minFontSize: 18,
                                                   maxFontSize: 22,
                                                   maxLines: 1,
-                                                  style: GoogleFonts.roboto(color: Color(0xFF000000))
+                                                  style: GoogleFonts.roboto(color: Colors.black)
                                               )
                                           )
                                       ]
@@ -163,7 +161,7 @@ class _PullsScreenState extends State<PullsScreen> {
                                       minFontSize: 15,
                                       maxFontSize: 18,
                                       maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000))
+                                      style: GoogleFonts.roboto(color: Colors.black)
                                   ),
                                   SizedBox(height: DSSpacing.s),
                                   AutoSizeText(
@@ -171,21 +169,21 @@ class _PullsScreenState extends State<PullsScreen> {
                                       minFontSize: 12,
                                       maxFontSize: 15,
                                       maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000))
+                                      style: GoogleFonts.roboto(color: Colors.black)
                                   ),
                                   SizedBox(height: DSSpacing.s),
                                   AutoSizeText(
                                       'Data de criação: ${formatDate(pullsModel.created_at)}',
                                       minFontSize: 12,
                                       maxFontSize: 15,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000))
+                                      style: GoogleFonts.roboto(color: Colors.black)
                                   ),
                                   SizedBox(height: DSSpacing.s),
                                   AutoSizeText(
                                       'Data de fechamento: ${formatDate(pullsModel.closed_at)}',
                                       minFontSize: 12,
                                       maxFontSize: 15,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000))
+                                      style: GoogleFonts.roboto(color: Colors.black)
                                   ),
                                   SizedBox(height: DSSpacing.s),
                                   pullsModel.differenceTime != null
@@ -194,7 +192,7 @@ class _PullsScreenState extends State<PullsScreen> {
                                       minFontSize: 15,
                                       maxFontSize: 18,
                                       maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Color(0xFF000000), fontWeight: FontWeight.bold)
+                                      style: GoogleFonts.roboto(color: Colors.black, fontWeight: FontWeight.bold)
                                   )
                                   : Container()
                               ]

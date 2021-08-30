@@ -9,13 +9,15 @@ import 'package:app_blueprint/app_module/blocs/home/home_bloc.dart';
 import '../../mock/mock.dart';
 
 main() {
-    final usecase = UserRepositoriesUseCaseMock();
+    final usecase = UserRepositoriesUseCaseImplMock();
 
     blocTest(
         'Deve emitir sequencia correta de estados da HomeBloc - Success',
         build: () {
-          HomeBloc homeBloc = HomeBloc(usecase);
-          when(() => usecase.execute()).thenAnswer((_) async => Right(<ReposModel>[]));
+          HomeBloc homeBloc = HomeBloc(usecase: usecase);
+
+          when(() => usecase.execute(page: 1)).thenAnswer((_) async => Right(<ReposModel>[]));
+
           return homeBloc;
         },
         act: (HomeBloc bloc) => bloc.add(StartEventHome()),
@@ -25,8 +27,10 @@ main() {
     blocTest(
         'Deve emitir sequencia correta de estados da HomeBloc - Failure',
         build: () {
-          HomeBloc homeBloc = HomeBloc(usecase);
-          when(() => usecase.execute()).thenAnswer((_) async => Left(EmptyTokenAPI()));
+          HomeBloc homeBloc = HomeBloc(usecase: usecase);
+
+          when(() => usecase.execute(page: 1)).thenAnswer((_) async => Left(EmptyTokenAPI()));
+
           return homeBloc;
         },
         act: (HomeBloc bloc) => bloc.add(StartEventHome()),

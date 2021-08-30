@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final HomeBloc _homeBloc = Modular.get<HomeBloc>();
   List<ReposModel> _listSearchResult = [];
-  List<ReposModel> _listAllResult = [];
   bool _visible = false;
 
   @override
@@ -36,24 +35,53 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-              "Home",
-              style: GoogleFonts.roboto(color: Colors.white)
-          ),
-          elevation: 0.0,
-          backgroundColor: Color(0xFF000000),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () => Navigator.pushNamed(context, "/settings")
-            )
-          ]
+            title: AutoSizeText(
+                "Home",
+                minFontSize: 16,
+                maxFontSize: 20,
+                maxLines: 1,
+                style: GoogleFonts.roboto(color: Colors.white)
+            ),
+            centerTitle: true,
+            elevation: 0.0,
+            backgroundColor: Colors.black,
+            actions: [
+                IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () => Navigator.pushNamed(context, "/settings")
+                )
+            ]
         ),
         body: SafeArea(
             child: BlocBuilder(
                 bloc: _homeBloc,
                 builder: (context, state) {
-                    if(state is LoadingStateHome)
+                    if(state is FailureStateHome)
+                        return Padding(
+                            padding: EdgeInsets.all(DSSpacing.l),
+                            child: Column(
+                                children: [
+                                    Center(
+                                        child: Text(
+                                            '${state.message}',
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 16,
+                                                color: Colors.black
+                                            )
+                                        )
+                                    ),
+                                    SizedBox(height: DSSpacing.l),
+                                    DSButton(
+                                        title: "Recarregar",
+                                        onPressed: () => _homeBloc.add(StartEventHome())
+                                    )
+                                ]
+                            )
+                        );
+                    else if(state is SuccessStateHome)
+                        return buildSuccess(_visible ? _listSearchResult : state.list);
+                    else
                         return Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height,
@@ -69,88 +97,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                             )
                         );
-                    else if(state is FailureStateHome)
-                        return Padding(
-                            padding: EdgeInsets.all(DSSpacing.l),
-                            child: Column(
-                                children: [
-                                    Center(
-                                        child: Text(
-                                            '${state.message}',
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 16,
-                                                color: Color(0xFF000000)
-                                            )
-                                        )
-                                    ),
-                                    SizedBox(height: DSSpacing.l),
-                                    DSButton(
-                                        title: "Recarregar",
-                                        onPressed: () => _homeBloc.add(StartEventHome())
-                                    )
-                                ]
-                            )
-                        );
-                    else if(state is SuccessStateHome) {
-                        _listAllResult.clear();
-                        _listAllResult.addAll(state.list);
-                        return buildSuccess();
-                    }
-                    else
-                        return Container();
                 }
             )
+        ),
+        floatingActionButton: BlocBuilder(
+            bloc: _homeBloc,
+            builder: (context, state) {
+                if(state is SuccessStateHome)
+                    return FloatingActionButton.extended(
+                        onPressed: () => _homeBloc.add(StartEventHome()),
+                        icon: Icon(Icons.download_outlined, color: Colors.white),
+                        label: Text("Carregar mais"),
+                        backgroundColor: Colors.black
+                    );
+                else
+                  return Container();
+            }
         )
     );
   }
 
-  void onSearchTextChanged(String text) {
-      _listSearchResult.clear();
-
-      if(text.isEmpty) {
-          setState(() {
-              _visible = false;
-          });
-          return;
-      }
-
-      _listAllResult.forEach((item) {
-          if(item.name.contains(text))
-              _listSearchResult.add(item);
-      });
-
-      setState(() {
-          _visible = true;
-      });
-  }
-
-  Widget buildSuccess() {
+  Widget buildSuccess(List<ReposModel> list) {
       return ListView(
           padding: EdgeInsets.all(DSSpacing.l),
           children: [
               DSSearchBox(
                   placeholder: "Repository name",
-                  onSearch: onSearchTextChanged
+                  onSearch: (String text) {
+                      _listSearchResult.clear();
+
+                      if(text.isEmpty) {
+                          setState(() {
+                              _visible = false;
+                          });
+                          return;
+                      }
+
+                      list.forEach((item) {
+                          if(item.name.contains(text))
+                              _listSearchResult.add(item);
+                      });
+
+                      setState(() {
+                          _visible = true;
+                      });
+                  }
               ),
               SizedBox(height: DSSpacing.l),
-              Visibility(
-                  visible: _visible,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: List.generate(
-                          _listSearchResult.length,
-                          (i) => buildItem(_listSearchResult[i])
-                      )
-                  ),
-                  replacement: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: List.generate(
-                          _listAllResult.length,
-                          (i) => buildItem(_listAllResult[i])
-                      )
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List.generate(
+                      list.length,
+                      (i) => buildItem(list[i])
                   )
               )
           ]
@@ -173,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
               child: Row(
                   children: [
-                      Container(color: Color(0xFF000000), width: 2),
+                      Container(color: Colors.black, width: 2),
                       SizedBox(width: DSSpacing.m),
                       AutoSizeText(
                           repo.name,
@@ -181,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           maxFontSize: 18,
                           maxLines: 1,
                           style: GoogleFonts.roboto(
-                              color: Color(0xFF000000),
+                              color: Colors.black,
                               fontWeight: FontWeight.w400
                           )
                       )

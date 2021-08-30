@@ -4,8 +4,6 @@ abstract class HomeState {
   const HomeState();
 }
 
-class InitialStateHome extends HomeState { }
-
 class LoadingStateHome extends HomeState { }
 
 class FailureStateHome extends HomeState {

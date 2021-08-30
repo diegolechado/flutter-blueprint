@@ -8,28 +8,17 @@ import 'package:mocktail/mocktail.dart';
 import '../../mock/mock.dart';
 
 main() {
-  final repository = UserRepositoryMock();
-  final storage = SharedPreferencesDatasourceMock();
-  final usecase = UserRepositoriesUseCaseImpl(userRepository: repository, storage: storage);
+  final repository = UserRepositoryImplMock();
+  final usecase = UserRepositoriesUseCaseImpl(userRepository: repository);
 
   test(
       'Deve retornar uma lista com resultados',
       () async {
-          when(() => storage.read('API-Token', String)).thenAnswer((_) async => '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');
-          when(() => repository.retrieveListRepositories('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')).thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
-          var result = await usecase.execute();
+          when(() => repository.retrieveListRepositories(page: 1))
+              .thenAnswer((_) async => Right<Failure, List<ReposModel>>(<ReposModel>[]));
+          var result = await usecase.execute(page: 1);
           expect(result.isRight(), true);
           expect(result | [], isA<List<ReposModel>>());
-      }
-  );
-
-  test(
-      'Deve retornar um EmptyTokenAPI caso não consiga recuperar o token',
-      () async {
-          when(() => storage.read('API-Token', String)).thenAnswer((_) async => null);
-          var result = await usecase.execute();
-          final error = result.fold<Failure?>(id, (_) => null);
-          expect(error, isA<EmptyTokenAPI>());
       }
   );
 }

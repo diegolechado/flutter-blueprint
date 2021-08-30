@@ -7,9 +7,12 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-    final UserRepositoriesUseCase useCase;
+    final UserRepositoriesUseCase usecase;
 
-    HomeBloc(this.useCase) : super(InitialStateHome());
+    HomeBloc({required this.usecase}) : super(LoadingStateHome());
+
+    int _page = 0;
+    List<ReposModel> _listAllResult = [];
 
     @override
     Stream<HomeState> mapEventToState(HomeEvent event) async* {
@@ -20,11 +23,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Stream<HomeState> _start() async* {
         yield LoadingStateHome();
 
-        final result = await useCase.execute();
+        _page = _page + 1;
 
-        yield result.fold(
-            (failure) => FailureStateHome(message: failure.message),
-            (success) => SuccessStateHome(list: success),
+        final result = await usecase.execute(page: _page);
+
+        yield* result.fold(
+            (failure) async* {
+                yield FailureStateHome(message: failure.message);
+            },
+            (success) async* {
+                _listAllResult.addAll(success);
+                print(_listAllResult.length);
+                yield SuccessStateHome(list: _listAllResult);
+            }
         );
     }
 

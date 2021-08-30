@@ -7,9 +7,9 @@ part 'pulls_event.dart';
 part 'pulls_state.dart';
 
 class PullsBloc extends Bloc<PullsEvent, PullsState> {
-    final PullsUseCase useCase;
+    final PullsUseCase usecase;
 
-    PullsBloc(this.useCase) : super(InitialStatePulls());
+    PullsBloc({required this.usecase}) : super(LoadingStatePulls());
 
     @override
     Stream<PullsState> mapEventToState(PullsEvent event) async* {
@@ -18,9 +18,7 @@ class PullsBloc extends Bloc<PullsEvent, PullsState> {
     }
 
     Stream<PullsState> _start(StartEventPulls event) async* {
-        yield LoadingStatePulls();
-
-        final result = await useCase.execute(event.url);
+        final result = await usecase.execute(event.url);
 
         yield result.fold(
             (failure) => FailureStatePulls(message: failure.message),

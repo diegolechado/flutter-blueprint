@@ -4,8 +4,6 @@ abstract class PullsState {
   const PullsState();
 }
 
-class InitialStatePulls extends PullsState { }
-
 class LoadingStatePulls extends PullsState { }
 
 class FailureStatePulls extends PullsState {

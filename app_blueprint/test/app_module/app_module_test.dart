@@ -32,14 +32,15 @@ main() {
             final jsonResponse = json.decode(await File('assets/json/mockGetAllRepoUser.json').readAsString());
 
             when(() => storage.read('API-Token', String)).thenAnswer((_) async => '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');
-            when(() => connect.request(
-                method: any(),
-                path: any(),
-                options: any()
-            )).thenAnswer((_) async => Response(requestOptions: RequestOptions(path: any()), statusCode: 200, data: jsonResponse));
+
+            when(() => connect.request(method: any(), path: any()))
+                .thenAnswer((_) async => Response(
+                    requestOptions: RequestOptions(path: any()),
+                    statusCode: 200,
+                    data: jsonResponse));
 
             var usecase = Modular.get<UserRepositoriesUseCase>();
-            var result = await usecase.execute();
+            var result = await usecase.execute(page: 1);
 
             expect(result.isRight(), true);
             expect(result | [], isA<List<ReposModel>>());
