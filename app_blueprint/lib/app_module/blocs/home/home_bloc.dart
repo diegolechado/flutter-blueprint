@@ -33,7 +33,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             },
             (success) async* {
                 _listAllResult.addAll(success);
-                print(_listAllResult.length);
                 yield SuccessStateHome(list: _listAllResult);
             }
         );
