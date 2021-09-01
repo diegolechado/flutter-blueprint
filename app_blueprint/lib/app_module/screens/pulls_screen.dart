@@ -1,11 +1,12 @@
 import 'package:app_blueprint/app_module/blocs/pulls/pulls_bloc.dart';
 import 'package:app_blueprint/app_module/models/pulls_model.dart';
+import 'package:app_blueprint/design_system/widgets/app_bar.dart';
+import 'package:app_blueprint/design_system/colors.dart';
+import 'package:app_blueprint/design_system/font.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PullsScreen extends StatefulWidget {
     final String name;
@@ -37,32 +38,22 @@ class _PullsScreenState extends State<PullsScreen> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            appBar: AppBar(
-                title: AutoSizeText(
-                    widget.name,
-                    minFontSize: 16,
-                    maxFontSize: 20,
-                    maxLines: 1,
-                    style: GoogleFonts.roboto(color: Colors.white)
-                ),
-                centerTitle: true,
-                elevation: 0.0,
-                backgroundColor: Colors.black
-            ),
+            appBar: DSAppBar(title: widget.name),
             body: SafeArea(
                 child: BlocBuilder(
                     bloc: _pullsBloc,
                     builder: (context, state) {
                         if(state is FailureStatePulls)
                             return Padding(
-                                padding: EdgeInsets.all(DSSpacing.l),
+                                padding: EdgeInsets.all(DSSpacing.m),
                                 child: Center(
                                     child: Text(
-                                        '${state.message}',
+                                        state.message,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 16,
-                                            color: Colors.black
+                                        style: TextStyle(
+                                            fontFamily: DSFontFamily.GothamMedium,
+                                            fontSize: DSFontSize.l,
+                                            color: DSColors.black
                                         )
                                     )
                                 )
@@ -79,8 +70,8 @@ class _PullsScreenState extends State<PullsScreen> {
                                         height: 50,
                                         child: CircularProgressIndicator(
                                             strokeWidth: 2.4,
-                                            color: Colors.black,
-                                            backgroundColor: Color(0xFFF0F0F0)
+                                            color: DSColors.black,
+                                            backgroundColor: DSColors.backgroundGrey
                                         )
                                     )
                                 )
@@ -93,9 +84,8 @@ class _PullsScreenState extends State<PullsScreen> {
 
     Widget buildSuccess(List<PullsModel> listPullsModel) => SingleChildScrollView(
         child: Padding(
-            padding: EdgeInsets.all(DSSpacing.l),
-            child: listPullsModel.length > 0
-            ? Column(
+            padding: EdgeInsets.all(DSSpacing.m),
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(
@@ -103,34 +93,21 @@ class _PullsScreenState extends State<PullsScreen> {
                     (i) => buildItem(listPullsModel[i])
                 )
             )
-            : Padding(
-                padding: EdgeInsets.all(DSSpacing.l),
-                child: Center(
-                    child: Text(
-                        "Este repositorio não tem nenhum PR",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            color: Colors.black
-                        )
-                    )
-                )
-            )
         )
     );
 
     Widget buildItem(PullsModel pullsModel) => Container(
-          height: 214,
-          color: Color(0xFFF0F0F0),
-          margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
+          height: 236,
+          color: DSColors.backgroundGrey,
+          margin: EdgeInsets.symmetric(vertical: DSSpacing.s),
           child: Row(
               children: [
-                  Container(color: Colors.black, width: 2),
+                  Container(color: DSColors.black, width: 2),
                   Expanded(
                       child: Container(
-                          padding: EdgeInsets.all(DSSpacing.m),
+                          padding: EdgeInsets.all(DSSpacing.s),
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                   Row(
@@ -145,54 +122,63 @@ class _PullsScreenState extends State<PullsScreen> {
                                           ),
                                           SizedBox(width: 20),
                                           Expanded(
-                                              child: AutoSizeText(
+                                              child: Text(
                                                   '${pullsModel.user.login}',
-                                                  minFontSize: 18,
-                                                  maxFontSize: 22,
-                                                  maxLines: 1,
-                                                  style: GoogleFonts.roboto(color: Colors.black)
+                                                  style: TextStyle(
+                                                      fontFamily: DSFontFamily.GothamMedium,
+                                                      fontSize: DSFontSize.l,
+                                                      color: DSColors.black
+                                                  )
                                               )
                                           )
                                       ]
                                   ),
-                                  SizedBox(height: DSSpacing.m),
-                                  AutoSizeText(
+                                  SizedBox(height: DSSpacing.s),
+                                  Text(
                                       'Title: ${pullsModel.title}',
-                                      minFontSize: 15,
-                                      maxFontSize: 18,
-                                      maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Colors.black)
+                                      style: TextStyle(
+                                          fontFamily: DSFontFamily.GothamRegular,
+                                          fontSize: DSFontSize.m,
+                                          color: DSColors.black
+                                      )
                                   ),
-                                  SizedBox(height: DSSpacing.s),
-                                  AutoSizeText(
+                                  SizedBox(height: DSSpacing.xs),
+                                  Text(
                                       'Status: ${pullsModel.state}',
-                                      minFontSize: 12,
-                                      maxFontSize: 15,
-                                      maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Colors.black)
+                                      style: TextStyle(
+                                          fontFamily: DSFontFamily.GothamRegular,
+                                          fontSize: DSFontSize.m,
+                                          color: DSColors.black
+                                      )
                                   ),
-                                  SizedBox(height: DSSpacing.s),
-                                  AutoSizeText(
-                                      'Data de criação: ${formatDate(pullsModel.created_at)}',
-                                      minFontSize: 12,
-                                      maxFontSize: 15,
-                                      style: GoogleFonts.roboto(color: Colors.black)
+                                  SizedBox(height: DSSpacing.xs),
+                                  Text(
+                                      'Abertura: ${formatDate(pullsModel.created_at)}',
+                                      style: TextStyle(
+                                          fontFamily: DSFontFamily.GothamRegular,
+                                          fontSize: DSFontSize.m,
+                                          color: DSColors.black
+                                      )
                                   ),
-                                  SizedBox(height: DSSpacing.s),
-                                  AutoSizeText(
-                                      'Data de fechamento: ${formatDate(pullsModel.closed_at)}',
-                                      minFontSize: 12,
-                                      maxFontSize: 15,
-                                      style: GoogleFonts.roboto(color: Colors.black)
+                                  SizedBox(height: DSSpacing.xs),
+                                  Text(
+                                      'Fechamento: ${formatDate(pullsModel.closed_at)}',
+                                      style: TextStyle(
+                                          fontFamily: DSFontFamily.GothamRegular,
+                                          fontSize: DSFontSize.m,
+                                          color: DSColors.black
+                                      )
                                   ),
                                   SizedBox(height: DSSpacing.s),
                                   pullsModel.differenceTime != null
-                                  ? AutoSizeText(
+                                  ? Text(
                                       getTimeString(pullsModel.differenceTime!.inMinutes),
-                                      minFontSize: 15,
-                                      maxFontSize: 18,
-                                      maxLines: 1,
-                                      style: GoogleFonts.roboto(color: Colors.black, fontWeight: FontWeight.bold)
+                                      style: TextStyle(
+                                          fontFamily: DSFontFamily.GothamMedium,
+                                          color: DSColors.black,
+                                          fontSize: DSFontSize.m,
+                                          fontWeight: FontWeight.bold
+                                      )
                                   )
                                   : Container()
                               ]

@@ -28,8 +28,6 @@ dependencies:
   dio: ^4.0.0
   shared_preferences: ^2.0.6
   dartz: ^0.10.0-nullsafety.2
-  google_fonts: ^2.1.0
-  auto_size_text: ^3.0.0-nullsafety.0
   flutter_native_splash: ^1.2.1
 
 dev_dependencies:
@@ -54,7 +52,10 @@ flutter:
     - assets/images/
     - assets/icons/
 
-  #fonts:
-  #  - family: SpaceGrotesk
-  #    fonts:
-  #      - asset: assets/fonts/SpaceGrotesk.otf
+  fonts:
+    - family: GothamBookRegular
+      fonts:
+        - asset: assets/fonts/Gotham-Book-Regular.otf
+    - family: GothamBookMedium
+      fonts:
+        - asset: assets/fonts/Gotham-Book-Medium.ttf

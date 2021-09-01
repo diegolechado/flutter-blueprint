@@ -17,15 +17,18 @@ class PullsRepositoryImpl implements PullsRepository {
         try {
             final result = await userDatasource.retrieveListPullsByRepository(url);
 
-            result.forEach((element) {
-                if(element.closed_at != null) {
-                    DateTime created = DateTime.parse(element.created_at);
-                    DateTime closed = DateTime.parse(element.closed_at!);
-                    element.differenceTime = closed.difference(created);
-                }
-            });
-
-            return Right(result);
+            if(result.length > 0) {
+                result.forEach((element) {
+                    if(element.closed_at != null) {
+                        DateTime created = DateTime.parse(element.created_at);
+                        DateTime closed = DateTime.parse(element.closed_at!);
+                        element.differenceTime = closed.difference(created);
+                    }
+                });
+                return Right(result);
+            }
+            else
+                return Left(EmptyList());
         } catch (e) {
             print(e);
             return Left(DatasourceError());

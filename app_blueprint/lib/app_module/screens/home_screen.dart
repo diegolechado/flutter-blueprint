@@ -1,12 +1,13 @@
 import 'package:app_blueprint/app_module/blocs/home/home_bloc.dart';
 import 'package:app_blueprint/app_module/models/repos_model.dart';
-import 'package:app_blueprint/design_system/button.dart';
-import 'package:app_blueprint/design_system/search_box.dart';
+import 'package:app_blueprint/design_system/widgets/app_bar.dart';
+import 'package:app_blueprint/design_system/widgets/button.dart';
+import 'package:app_blueprint/design_system/colors.dart';
+import 'package:app_blueprint/design_system/font.dart';
+import 'package:app_blueprint/design_system/widgets/search_box.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,22 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: AutoSizeText(
-                "Home",
-                minFontSize: 16,
-                maxFontSize: 20,
-                maxLines: 1,
-                style: GoogleFonts.roboto(color: Colors.white)
-            ),
-            centerTitle: true,
-            elevation: 0.0,
-            backgroundColor: Colors.black,
+        appBar: DSAppBar(
+            title: "Home",
             actions: [
-                IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () => Navigator.pushNamed(context, "/settings")
-                )
+              IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () => Navigator.pushNamed(context, "/settings")
+              )
             ]
         ),
         body: SafeArea(
@@ -58,23 +50,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, state) {
                     if(state is FailureStateHome)
                         return Padding(
-                            padding: EdgeInsets.all(DSSpacing.l),
+                            padding: EdgeInsets.all(DSSpacing.m),
                             child: Column(
                                 children: [
                                     Center(
                                         child: Text(
-                                            '${state.message}',
+                                            state.message,
                                             textAlign: TextAlign.center,
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 16,
-                                                color: Colors.black
+                                            style: TextStyle(
+                                                fontFamily: DSFontFamily.GothamMedium,
+                                                fontSize: DSFontSize.l,
+                                                color: DSColors.black
                                             )
                                         )
                                     ),
-                                    SizedBox(height: DSSpacing.l),
                                     DSButton(
                                         title: "Recarregar",
-                                        onPressed: () => _homeBloc.add(StartEventHome())
+                                        colorProfile: ColorProfileEnum.black,
+                                        onPressed: () => _homeBloc.add(StartEventHome()),
+                                        marginTop: DSSpacing.l
                                     )
                                 ]
                             )
@@ -91,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 50,
                                     child: CircularProgressIndicator(
                                         strokeWidth: 2.4,
-                                        color: Colors.black,
-                                        backgroundColor: Color(0xFFF0F0F0)
+                                        color: DSColors.black,
+                                        backgroundColor: DSColors.backgroundGrey
                                     )
                                 )
                             )
@@ -106,9 +100,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 if(state is SuccessStateHome)
                     return FloatingActionButton.extended(
                         onPressed: () => _homeBloc.add(StartEventHome()),
-                        icon: Icon(Icons.download_outlined, color: Colors.white),
-                        label: Text("Carregar mais"),
-                        backgroundColor: Colors.black
+                        icon: Icon(
+                            Icons.download_outlined,
+                            color: DSColors.white,
+                            size: 20
+                        ),
+                        label: Text(
+                            "Carregar mais",
+                            style: TextStyle(fontSize: DSFontSize.s),
+                        ),
+                        backgroundColor: DSColors.black
                     );
                 else
                   return Container();
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildSuccess(List<ReposModel> list) {
       return ListView(
-          padding: EdgeInsets.all(DSSpacing.l),
+          padding: EdgeInsets.all(DSSpacing.m),
           children: [
               DSSearchBox(
                   placeholder: "Repository name",
@@ -167,21 +168,19 @@ class _HomeScreenState extends State<HomeScreen> {
               }
           ),
           child: Container(
-              margin: EdgeInsets.symmetric(vertical: DSSpacing.m),
-              color: Color(0xFFF0F0F0),
+              margin: EdgeInsets.symmetric(vertical: DSSpacing.s),
+              color: DSColors.backgroundGrey,
               height: 50,
               child: Row(
                   children: [
-                      Container(color: Colors.black, width: 2),
-                      SizedBox(width: DSSpacing.m),
-                      AutoSizeText(
+                      Container(color: DSColors.black, width: 2),
+                      SizedBox(width: DSSpacing.xs),
+                      Text(
                           repo.name,
-                          minFontSize: 15,
-                          maxFontSize: 18,
-                          maxLines: 1,
-                          style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400
+                          style: TextStyle(
+                              fontFamily: DSFontFamily.GothamMedium,
+                              color: DSColors.black,
+                              fontSize: DSFontSize.m
                           )
                       )
                   ]

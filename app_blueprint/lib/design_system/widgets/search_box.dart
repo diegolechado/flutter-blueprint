@@ -1,6 +1,7 @@
+import 'package:app_blueprint/design_system/colors.dart';
+import 'package:app_blueprint/design_system/font.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DSSearchBox extends StatefulWidget {
   final String placeholder;
@@ -25,22 +26,24 @@ class _DSSearchBoxState extends State<DSSearchBox> {
                   widget.text = text;
                 });
             },
-            style: GoogleFonts.roboto(
-                color: Color(0xFF000000),
+            style: TextStyle(
+                fontFamily: DSFontFamily.GothamRegular,
+                color: DSColors.black,
                 fontWeight: FontWeight.w400
             ),
             decoration: InputDecoration(
                 counterText: "",
                 labelText: widget.placeholder,
-                labelStyle: GoogleFonts.roboto(
-                    color: Color(0xFF000000),
+                labelStyle: TextStyle(
+                    fontFamily: DSFontFamily.GothamRegular,
+                    color: DSColors.black,
                     fontWeight: FontWeight.w400
                 ),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF000000))),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DSColors.black)),
                 contentPadding: EdgeInsets.only(bottom: DSSpacing.s),
                 suffixIcon: IconButton(
                     iconSize: 20,
-                    color: Color(0xFF000000),
+                    color: DSColors.black,
                     icon: Icon(Icons.search),
                     onPressed: () {
                       if(widget.text != null) {

@@ -11,3 +11,8 @@ class DatasourceError extends Failure {
   @override
   String get message => "Erro ao buscar os dados";
 }
+
+class EmptyList extends Failure {
+  @override
+  String get message => "Este repositorio não tem nenhum PR";
+}

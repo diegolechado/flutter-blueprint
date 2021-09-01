@@ -1,11 +1,12 @@
 import 'package:app_blueprint/app_module/blocs/settings/settings_bloc.dart';
-import 'package:app_blueprint/design_system/button.dart';
+import 'package:app_blueprint/design_system/widgets/app_bar.dart';
+import 'package:app_blueprint/design_system/widgets/button.dart';
+import 'package:app_blueprint/design_system/colors.dart';
+import 'package:app_blueprint/design_system/font.dart';
 import 'package:app_blueprint/design_system/spacing.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsScreen extends StatelessWidget {
   final SettingsBloc _settingsBloc = Modular.get<SettingsBloc>();
@@ -22,63 +23,58 @@ class SettingsScreen extends StatelessWidget {
                     SnackBar(
                         content: Text(
                             'Salvo com sucesso!',
-                            style: GoogleFonts.roboto(color: Colors.white)
+                            style: TextStyle(
+                                fontFamily: DSFontFamily.GothamRegular,
+                                color: DSColors.white,
+                                fontSize: DSFontSize.s
+                            )
                         ),
-                        backgroundColor: Colors.black
-                    )
-                );
+                        backgroundColor: DSColors.black
+                    ));
           },
         child: Scaffold(
-            appBar: AppBar(
-                title: AutoSizeText(
-                    "Settings",
-                    minFontSize: 16,
-                    maxFontSize: 20,
-                    maxLines: 1,
-                    style: GoogleFonts.roboto(color: Colors.white)
-                ),
-                centerTitle: true,
-                elevation: 0.0,
-                backgroundColor: Colors.black
-            ),
-            body: Padding(
-                padding: EdgeInsets.all(DSSpacing.l),
-                child: Column(
-                    children: [
-                      TextFormField(
-                          decoration: InputDecoration(labelText: "API Token"),
-                          controller: _controller,
-                          focusNode: _focusNode
-                      ),
-                      SizedBox(height: DSSpacing.l),
-                      BlocBuilder(
-                          bloc: _settingsBloc,
-                          builder: (context, state) {
-                              if(state == SaveEnum.loading)
-                                  return Center(
-                                      child: Container(
-                                          width: 45,
-                                          height: 45,
-                                          child: CircularProgressIndicator(
-                                              strokeWidth: 2.4,
-                                              color: Colors.black,
-                                              backgroundColor: Color(0xFFF0F0F0)
+            appBar: DSAppBar(title: "Settings"),
+            body: SafeArea(
+                child: Padding(
+                    padding: EdgeInsets.all(DSSpacing.m),
+                    child: Column(
+                        children: [
+                          TextFormField(
+                              decoration: InputDecoration(labelText: "API Token"),
+                              controller: _controller,
+                              focusNode: _focusNode
+                          ),
+                          SizedBox(height: DSSpacing.l),
+                          BlocBuilder(
+                              bloc: _settingsBloc,
+                              builder: (context, state) {
+                                  if(state == SaveEnum.loading)
+                                      return Center(
+                                          child: Container(
+                                              width: 45,
+                                              height: 45,
+                                              child: CircularProgressIndicator(
+                                                  strokeWidth: 2.4,
+                                                  color: DSColors.black,
+                                                  backgroundColor: DSColors.backgroundGrey
+                                              )
                                           )
-                                      )
-                                  );
-                              else
-                                  return DSButton(
-                                      title: "Salvar",
-                                      onPressed: () {
-                                          if(_controller.text != "") {
-                                              _focusNode.unfocus();
-                                              _settingsBloc.add(_controller.text);
+                                      );
+                                  else
+                                      return DSButton(
+                                          title: "Salvar",
+                                          colorProfile: ColorProfileEnum.black,
+                                          onPressed: () {
+                                              if(_controller.text != "") {
+                                                  _focusNode.unfocus();
+                                                  _settingsBloc.add(_controller.text);
+                                              }
                                           }
-                                      }
-                                  );
-                          }
-                      )
-                    ]
+                                      );
+                              }
+                          )
+                        ]
+                    )
                 )
             )
         )
